@@ -31,8 +31,9 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Center(
         child: Image.asset(
           'assets/images/SinFlixSplash.png',
-          width: 200,
-          fit: BoxFit.contain,
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: double.infinity,
         ),
       ),
     );

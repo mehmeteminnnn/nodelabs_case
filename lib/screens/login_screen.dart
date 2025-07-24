@@ -161,11 +161,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildSocialButton('G'),
+                    _buildSocialButton('google'),
                     const SizedBox(width: 16),
-                    _buildSocialButton(''),
+                    _buildSocialButton('apple'),
                     const SizedBox(width: 16),
-                    _buildSocialButton('f'),
+                    _buildSocialButton('facebook'),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -199,7 +199,26 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildSocialButton(String text) {
+  Widget _buildSocialButton(String type) {
+    IconData icon;
+    Color color;
+    switch (type) {
+      case 'google':
+        icon = Icons.g_mobiledata;
+        color = Colors.white;
+        break;
+      case 'apple':
+        icon = Icons.apple;
+        color = Colors.white;
+        break;
+      case 'facebook':
+        icon = Icons.facebook;
+        color = Colors.white;
+        break;
+      default:
+        icon = Icons.person;
+        color = Colors.white;
+    }
     return Container(
       width: 48,
       height: 48,
@@ -207,12 +226,7 @@ class _LoginScreenState extends State<LoginScreen> {
         color: const Color(0xFF1E1E1E),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Center(
-        child: Text(
-          text,
-          style: const TextStyle(color: Colors.white, fontSize: 20),
-        ),
-      ),
+      child: Center(child: Icon(icon, color: color, size: 28)),
     );
   }
 }

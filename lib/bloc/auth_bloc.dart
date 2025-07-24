@@ -73,8 +73,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (response.statusCode == 200) {
         final data = AuthResponse.fromJson(jsonDecode(response.body));
         emit(AuthSuccess(data.user));
+      } else if (response.statusCode == 400) {
+        emit(AuthFailure('Kullanıcı bilgileri yanlış. Lütfen tekrar deneyin.'));
       } else {
-        emit(AuthFailure('Giriş başarısız: ${response.body}'));
+        emit(AuthFailure('Giriş başarısız. Lütfen tekrar deneyin.'));
       }
     } catch (e) {
       emit(AuthFailure('Bir hata oluştu: $e'));
@@ -95,8 +97,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (response.statusCode == 200) {
         final data = AuthResponse.fromJson(jsonDecode(response.body));
         emit(AuthSuccess(data.user));
+      } else if (response.statusCode == 400) {
+        emit(AuthFailure('Kullanıcı bilgileri yanlış. Lütfen tekrar deneyin.'));
       } else {
-        emit(AuthFailure('Kayıt başarısız: ${response.body}'));
+        emit(AuthFailure('Kayıt başarısız. Lütfen tekrar deneyin.'));
       }
     } catch (e) {
       emit(AuthFailure('Bir hata oluştu: $e'));
