@@ -1,0 +1,16 @@
+{
+  "appTitle": "SinFlix",
+  "login": "Login",
+  "register": "Register",
+  "email": "Email",
+  "password": "Password",
+  "name": "Full Name",
+  "welcome": "Welcome",
+  "profile": "Profile",
+  "explore": "Explore",
+  "favorites": "Favorite Movies",
+  "addPhoto": "Add Photo",
+  "uploadPhoto": "Upload Photo",
+  "continue": "Continue",
+  "logout": "Logout"
+} 

@@ -1,0 +1,16 @@
+{
+  "appTitle": "SinFlix",
+  "login": "Giriş Yap",
+  "register": "Kayıt Ol",
+  "email": "E-Posta",
+  "password": "Şifre",
+  "name": "Ad Soyad",
+  "welcome": "Hoşgeldiniz",
+  "profile": "Profil",
+  "explore": "Keşfet",
+  "favorites": "Beğendiğim Filmler",
+  "addPhoto": "Fotoğraf Ekle",
+  "uploadPhoto": "Fotoğraf Yükle",
+  "continue": "Devam Et",
+  "logout": "Çıkış Yap"
+} 

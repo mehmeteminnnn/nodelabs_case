@@ -1,0 +1,112 @@
+import 'dart:convert';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../core/api_service.dart';
+import '../models/user_model.dart';
+import '../models/auth_response.dart';
+import 'package:equatable/equatable.dart';
+
+// Olaylar
+abstract class AuthEvent extends Equatable {
+  @override
+  List<Object?> get props => [];
+}
+
+class LoginRequested extends AuthEvent {
+  final String email;
+  final String password;
+  LoginRequested(this.email, this.password);
+  @override
+  List<Object?> get props => [email, password];
+}
+
+class RegisterRequested extends AuthEvent {
+  final String name;
+  final String email;
+  final String password;
+  RegisterRequested(this.name, this.email, this.password);
+  @override
+  List<Object?> get props => [name, email, password];
+}
+
+// Stateler
+abstract class AuthState extends Equatable {
+  @override
+  List<Object?> get props => [];
+}
+
+class AuthInitial extends AuthState {}
+
+class AuthLoading extends AuthState {}
+
+class AuthSuccess extends AuthState {
+  final UserModel user;
+  AuthSuccess(this.user);
+  @override
+  List<Object?> get props => [user];
+}
+
+class AuthFailure extends AuthState {
+  final String message;
+  AuthFailure(this.message);
+  @override
+  List<Object?> get props => [message];
+}
+
+// Bloc
+class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  final ApiService apiService;
+  AuthBloc(this.apiService) : super(AuthInitial()) {
+    on<LoginRequested>(_onLoginRequested);
+    on<RegisterRequested>(_onRegisterRequested);
+  }
+
+  Future<void> _onLoginRequested(
+    LoginRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthLoading());
+    try {
+      final response = await apiService.post('/auth/login', {
+        'email': event.email,
+        'password': event.password,
+      });
+      if (response.statusCode == 200) {
+        final data = AuthResponse.fromJson(jsonDecode(response.body));
+        emit(AuthSuccess(data.user));
+      } else {
+        emit(AuthFailure('Giriş başarısız: ${response.body}'));
+      }
+    } catch (e) {
+      emit(AuthFailure('Bir hata oluştu: $e'));
+    }
+  }
+
+  Future<void> _onRegisterRequested(
+    RegisterRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthLoading());
+    try {
+      final response = await apiService.post('/auth/register', {
+        'name': event.name,
+        'email': event.email,
+        'password': event.password,
+      });
+      if (response.statusCode == 200) {
+        final data = AuthResponse.fromJson(jsonDecode(response.body));
+        emit(AuthSuccess(data.user));
+      } else {
+        emit(AuthFailure('Kayıt başarısız: ${response.body}'));
+      }
+    } catch (e) {
+      emit(AuthFailure('Bir hata oluştu: $e'));
+    }
+  }
+
+  UserModel? get currentUser {
+    if (state is AuthSuccess) {
+      return (state as AuthSuccess).user;
+    }
+    return null;
+  }
+}
