@@ -8,7 +8,7 @@ class FilmService {
   FilmService(this.apiService);
 
   Future<List<FilmModel>> fetchFilms(int page) async {
-    final response = await apiService.post('/movies/list', {'page': page});
+    final response = await apiService.post('/movie/list', {'page': page});
     if (response.statusCode == 200) {
       final List data = jsonDecode(response.body)['movies'];
       return data.map((e) => FilmModel.fromJson(e)).toList();
@@ -18,7 +18,7 @@ class FilmService {
   }
 
   Future<void> toggleFavorite(int filmId) async {
-    final response = await apiService.post('/movies/favorite', {
+    final response = await apiService.post('/movie/favorite', {
       'movie_id': filmId,
     });
     if (response.statusCode != 200) {
@@ -27,7 +27,7 @@ class FilmService {
   }
 
   Future<List<FilmModel>> fetchFavoriteFilms() async {
-    final response = await apiService.post('/movies/favorites', {});
+    final response = await apiService.post('/movie/favorites', {});
     if (response.statusCode == 200) {
       final List data = jsonDecode(response.body)['movies'];
       return data.map((e) => FilmModel.fromJson(e)).toList();

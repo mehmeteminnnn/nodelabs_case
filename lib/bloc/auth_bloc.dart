@@ -66,7 +66,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(AuthLoading());
     try {
-      final response = await apiService.post('/auth/login', {
+      final response = await apiService.post('/user/login', {
         'email': event.email,
         'password': event.password,
       });
@@ -89,7 +89,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(AuthLoading());
     try {
-      final response = await apiService.post('/auth/register', {
+      final response = await apiService.post('/user/register', {
         'name': event.name,
         'email': event.email,
         'password': event.password,
@@ -98,8 +98,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final data = AuthResponse.fromJson(jsonDecode(response.body));
         emit(AuthSuccess(data.user));
       } else if (response.statusCode == 400) {
+        print('Register 400 response: ' + response.body);
         emit(AuthFailure('Kullanıcı bilgileri yanlış. Lütfen tekrar deneyin.'));
       } else {
+        print(
+          'Register error: statusCode= [33m [1m [4m${response.statusCode} [0m, body=${response.body}',
+        );
         emit(AuthFailure('Kayıt başarısız. Lütfen tekrar deneyin.'));
       }
     } catch (e) {
