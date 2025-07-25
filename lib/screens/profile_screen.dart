@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nodelabs_case/screens/limited_offer_screen.dart';
 import '../bloc/film_bloc.dart';
 import '../bloc/auth_bloc.dart';
 import '../models/film_model.dart';
@@ -13,7 +14,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  void _showLimitedOfferDialog() {
+  /*void _showLimitedOfferDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -129,9 +130,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         );
       },
     );
-  }
+  }*/
   
-  Widget _buildFeatureRow(String text) {
+ /* Widget _buildFeatureRow(String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
@@ -154,7 +155,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ],
       ),
     );
-  }
+  }*/
   @override
   void initState() {
     super.initState();
@@ -180,31 +181,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[800],
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.arrow_back,
+                  
+                  
+                   const Text(
+                      'Profil Detayı',
+                      style: TextStyle(
                         color: Colors.white,
-                        size: 20,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                  ),
-                  const Text(
-                    'Profil Detayı',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+              
                   GestureDetector(
-                    onTap: _showLimitedOfferDialog,
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LimitedOfferScreen(),
+                      ),
+                    ),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 12,
@@ -516,81 +510,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  /*Widget _buildBottomNavigationBar() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.black,
-        border: Border(
-          top: BorderSide(color: Colors.grey[800]!, width: 0.5),
-        ),
-      ),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacementNamed(context, '/explore');
-                },
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[800],
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Icon(
-                        Icons.home,
-                        color: Colors.white,
-                        size: 24,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    const Text(
-                      'Anasayfa',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Icon(
-                      Icons.person,
-                      color: Colors.black,
-                      size: 24,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  const Text(
-                    'Profil',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }*/
+  
 }

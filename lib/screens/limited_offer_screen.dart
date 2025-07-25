@@ -79,7 +79,8 @@ class LimitedOfferScreen extends StatelessWidget {
 
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.all(12),
+                scrollDirection: Axis.horizontal,
                 children: const [
                   JetonPaketCard(
                     bonusText: '+10%',
@@ -172,7 +173,7 @@ class JetonPaketCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.symmetric(horizontal:6),
       decoration: BoxDecoration(
         gradient:
             gradient
@@ -186,7 +187,7 @@ class JetonPaketCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Stack(
-        alignment: Alignment.topCenter,
+        alignment: Alignment.center,
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 36, 16, 16),
