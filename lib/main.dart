@@ -11,6 +11,7 @@ import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
 import 'screens/explore_screen.dart';
 import 'screens/profile_screen.dart';
+import 'screens/main_tab_screen.dart';
 import 'screens/splash_screen.dart';
 
 void main() {
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
               '/splash': (_) => const SplashScreen(),
               '/login': (_) => const LoginScreen(),
               '/register': (_) => const RegisterScreen(),
+              '/home': (_) => const MainTabScreen(),
               '/explore': (_) => const ExploreScreen(),
               '/profile': (_) => const ProfileScreen(),
             },

@@ -17,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(const Duration(seconds: 2), () {
       final authBloc = context.read<AuthBloc>();
       if (authBloc.currentUser != null) {
-        Navigator.pushReplacementNamed(context, '/explore');
+        Navigator.pushReplacementNamed(context, '/home');
       } else {
         Navigator.pushReplacementNamed(context, '/login');
       }

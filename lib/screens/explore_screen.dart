@@ -82,7 +82,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
           },
         ),
       ),
-      bottomNavigationBar: Container(
+      /*bottomNavigationBar: Container(
         padding: const EdgeInsets.all(16),
         decoration: const BoxDecoration(
           color: Colors.black,
@@ -161,7 +161,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
             ),
           ],
         ),
-      ),
+      ),*/
     );
   }
 

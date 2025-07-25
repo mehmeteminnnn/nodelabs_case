@@ -22,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthSuccess) {
-              Navigator.pushReplacementNamed(context, '/explore');
+              Navigator.pushReplacementNamed(context, '/home');
             } else if (state is AuthFailure) {
               ScaffoldMessenger.of(
                 context,

@@ -20,12 +20,17 @@ class FetchFilms extends FilmEvent {
 
 class ToggleFavorite extends FilmEvent {
   final String filmId;
-  ToggleFavorite(this.filmId);
+
+  ToggleFavorite(this.filmId, );
   @override
   List<Object?> get props => [filmId];
 }
-
-class FetchFavoriteFilms extends FilmEvent {}
+class FetchFavoriteFilms extends FilmEvent {
+  final String token;
+  FetchFavoriteFilms(this.token);
+  @override
+  List<Object?> get props => [token];
+}
 
 // Stateler
 abstract class FilmState extends Equatable {
@@ -60,6 +65,8 @@ class FavoriteFilmsLoaded extends FilmState {
 }
 
 // Bloc
+
+
 class FilmBloc extends Bloc<FilmEvent, FilmState> {
   final FilmService filmService;
   int _currentPage = 1;
@@ -68,9 +75,10 @@ class FilmBloc extends Bloc<FilmEvent, FilmState> {
 
   FilmBloc(this.filmService) : super(FilmInitial()) {
     on<FetchFilms>(_onFetchFilms);
-    on<ToggleFavorite>(_onToggleFavorite);
+  
     on<FetchFavoriteFilms>(_onFetchFavoriteFilms);
   }
+  
 
   Future<void> _onFetchFilms(FetchFilms event, Emitter<FilmState> emit) async {
     if (_hasReachedMax && event.page != 1) return;
@@ -90,7 +98,7 @@ class FilmBloc extends Bloc<FilmEvent, FilmState> {
     }
   }
 
-  Future<void> _onToggleFavorite(
+  /*Future<void> _onToggleFavorite(
     ToggleFavorite event,
     Emitter<FilmState> emit,
   ) async {
@@ -112,7 +120,7 @@ class FilmBloc extends Bloc<FilmEvent, FilmState> {
     } catch (e) {
       emit(FilmError(e.toString()));
     }
-  }
+  }*/
 
   Future<void> _onFetchFavoriteFilms(
     FetchFavoriteFilms event,
@@ -120,7 +128,7 @@ class FilmBloc extends Bloc<FilmEvent, FilmState> {
   ) async {
     emit(FilmLoading());
     try {
-      final films = await filmService.fetchFavoriteFilms();
+      final films = await filmService.fetchFavoriteFilms(event.token);
       emit(FavoriteFilmsLoaded(films));
     } catch (e) {
       emit(FilmError(e.toString()));

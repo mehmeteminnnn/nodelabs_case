@@ -23,13 +23,27 @@ class FilmService {
       throw Exception('Film listesi alınamadı');
     }
   }
+   Future<List<FilmModel>> fetchFavoriteFilms(String token) async {
+    final response = await http.get(
+      Uri.parse('${ApiService.baseUrl}/movie/favorites'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
 
-  Future<void> toggleFavorite(String filmId) async {
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final List movies = data['movies'] ?? [];
+      return movies.map((movie) => FilmModel.fromJson(movie)).toList();
+    } else if (response.statusCode == 401) {
+      throw Exception('Yetkisiz erişim. Lütfen tekrar giriş yapın.');
+    } else {
+      throw Exception('Favori filmler alınamadı. Hata kodu: ${response.statusCode}');
+    }
+  }
+
+  /*Future<void> toggleFavorite(String filmId) async {
     // Favori işlemi için mevcut API'ye göre güncelleme gerekebilir.
-  }
-
-  Future<List<FilmModel>> fetchFavoriteFilms() async {
-    // Favori filmler için mevcut API'ye göre güncelleme gerekebilir.
-    return [];
-  }
+  }*/
 }

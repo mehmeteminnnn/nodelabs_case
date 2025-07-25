@@ -158,7 +158,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<FilmBloc>().add(FetchFavoriteFilms());
+    final authBloc = context.read<AuthBloc>();
+    final token = authBloc.currentUser?.token ?? '';
+    context.read<FilmBloc>().add(FetchFavoriteFilms(token));
   }
 
   @override
@@ -356,7 +358,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(),
+     // bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 
@@ -514,7 +516,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildBottomNavigationBar() {
+  /*Widget _buildBottomNavigationBar() {
     return Container(
       decoration: BoxDecoration(
         color: Colors.black,
@@ -590,5 +592,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
-  }
+  }*/
 }
