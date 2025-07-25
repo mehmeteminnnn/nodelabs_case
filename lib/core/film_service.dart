@@ -7,32 +7,29 @@ class FilmService {
   final ApiService apiService;
   FilmService(this.apiService);
 
-  Future<List<FilmModel>> fetchFilms(int page) async {
-    final response = await apiService.post('/movie/list', {'page': page});
+  Future<List<FilmModel>> fetchFilms(int page, String token) async {
+    final url = Uri.parse('${ApiService.baseUrl}/movie/list?page=$page');
+    final response = await http.get(
+      url,
+      headers: {'Authorization': 'Bearer $token'},
+    );
+    print('Film listesi statusCode:  [33m${response.statusCode} [0m');
+    print('Film listesi body: ${response.body}');
     if (response.statusCode == 200) {
-      final List data = jsonDecode(response.body)['movies'];
+      final body = jsonDecode(response.body);
+      final List data = body['data']?['movies'] ?? [];
       return data.map((e) => FilmModel.fromJson(e)).toList();
     } else {
       throw Exception('Film listesi alınamadı');
     }
   }
 
-  Future<void> toggleFavorite(int filmId) async {
-    final response = await apiService.post('/movie/favorite', {
-      'movie_id': filmId,
-    });
-    if (response.statusCode != 200) {
-      throw Exception('Favori işlemi başarısız');
-    }
+  Future<void> toggleFavorite(String filmId) async {
+    // Favori işlemi için mevcut API'ye göre güncelleme gerekebilir.
   }
 
   Future<List<FilmModel>> fetchFavoriteFilms() async {
-    final response = await apiService.post('/movie/favorites', {});
-    if (response.statusCode == 200) {
-      final List data = jsonDecode(response.body)['movies'];
-      return data.map((e) => FilmModel.fromJson(e)).toList();
-    } else {
-      throw Exception('Favori filmler alınamadı');
-    }
+    // Favori filmler için mevcut API'ye göre güncelleme gerekebilir.
+    return [];
   }
 }

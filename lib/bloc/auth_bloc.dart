@@ -80,6 +80,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } catch (e) {
       emit(AuthFailure('Bir hata oluştu: $e'));
+      print('Login error: $e');
     }
   }
 
@@ -94,7 +95,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         'email': event.email,
         'password': event.password,
       });
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         final data = AuthResponse.fromJson(jsonDecode(response.body));
         emit(AuthSuccess(data.user));
       } else if (response.statusCode == 400) {

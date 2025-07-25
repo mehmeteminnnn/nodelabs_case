@@ -1,25 +1,22 @@
 class FilmModel {
-  final int id;
+  final String id;
   final String title;
   final String description;
-  final String imageUrl;
-  final bool isFavorite;
+  final String posterUrl;
 
   FilmModel({
     required this.id,
     required this.title,
     required this.description,
-    required this.imageUrl,
-    required this.isFavorite,
+    required this.posterUrl,
   });
 
   factory FilmModel.fromJson(Map<String, dynamic> json) {
     return FilmModel(
-      id: json['id'],
-      title: json['title'],
-      description: json['description'],
-      imageUrl: json['image_url'],
-      isFavorite: json['is_favorite'] ?? false,
+      id: json['id'] ?? json['_id'],
+      title: json['Title'] ?? '',
+      description: json['Plot'] ?? '',
+      posterUrl: json['Poster'] ?? '',
     );
   }
 }

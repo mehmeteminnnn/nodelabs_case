@@ -158,9 +158,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   CircleAvatar(
                     radius: 32,
                     backgroundImage:
-                        user?.profilePhoto != null &&
-                                user!.profilePhoto!.isNotEmpty
-                            ? NetworkImage(user.profilePhoto!)
+                        user?.photoUrl != null && user!.photoUrl!.isNotEmpty
+                            ? NetworkImage(user.photoUrl!)
                             : const AssetImage('assets/images/profile.jpg')
                                 as ImageProvider,
                   ),
@@ -268,7 +267,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ClipRRect(
           borderRadius: BorderRadius.circular(12),
           child: Image.network(
-            film.imageUrl,
+            film.posterUrl,
             width: double.infinity,
             height: 180,
             fit: BoxFit.cover,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/film_bloc.dart';
+import '../bloc/auth_bloc.dart';
 import '../models/film_model.dart';
 
 class ExploreScreen extends StatefulWidget {
@@ -16,7 +17,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<FilmBloc>().add(FetchFilms(1));
+    final authBloc = context.read<AuthBloc>();
+    final token = authBloc.currentUser?.token ?? '';
+    context.read<FilmBloc>().add(FetchFilms(1, token: token));
     _scrollController.addListener(_onScroll);
   }
 
@@ -25,13 +28,17 @@ class _ExploreScreenState extends State<ExploreScreen> {
         _scrollController.position.maxScrollExtent - 200) {
       final state = context.read<FilmBloc>().state;
       if (state is FilmLoaded && !state.hasReachedMax) {
-        context.read<FilmBloc>().add(FetchFilms((state.films.length ~/ 5) + 1));
+        final authBloc = context.read<AuthBloc>();
+        final token = authBloc.currentUser?.token ?? '';
+        context.read<FilmBloc>().add(FetchFilms((state.films.length ~/ 5) + 1, token: token));
       }
     }
   }
 
   Future<void> _onRefresh() async {
-    context.read<FilmBloc>().add(RefreshFilms());
+    final authBloc = context.read<AuthBloc>();
+    final token = authBloc.currentUser?.token ?? '';
+    context.read<FilmBloc>().add(FetchFilms(1, token: token));
   }
 
   @override
@@ -99,7 +106,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: ListTile(
         leading: Image.network(
-          film.imageUrl,
+          film.posterUrl,
           width: 60,
           height: 90,
           fit: BoxFit.cover,
@@ -114,15 +121,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
         subtitle: Text(
           film.description,
           style: const TextStyle(color: Colors.white70),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
         ),
         trailing: IconButton(
-          icon: Icon(
-            film.isFavorite ? Icons.favorite : Icons.favorite_border,
-            color: film.isFavorite ? Colors.red : Colors.white,
-          ),
-          onPressed: () {
-            context.read<FilmBloc>().add(ToggleFavorite(film.id));
-          },
+          icon: const Icon(Icons.favorite_border, color: Colors.white),
+          onPressed:
+              null, // Favori işlemi için API güncellemesi gerekirse burada yapılacak.
         ),
       ),
     );
