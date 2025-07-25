@@ -83,7 +83,7 @@ class FilmBloc extends Bloc<FilmEvent, FilmState> {
         _films.addAll(films);
       }
       _currentPage = event.page;
-      _hasReachedMax = films.length < 5;
+      _hasReachedMax = films.length < 10;
       emit(FilmLoaded(List.from(_films), hasReachedMax: _hasReachedMax));
     } catch (e) {
       emit(FilmError(e.toString()));

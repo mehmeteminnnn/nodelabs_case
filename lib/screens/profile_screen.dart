@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/auth_bloc.dart';
 import '../bloc/film_bloc.dart';
-import '../bloc/settings_cubit.dart';
+import '../bloc/auth_bloc.dart';
 import '../models/film_model.dart';
+import 'upload_photo_sheet.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -13,6 +13,148 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  void _showLimitedOfferDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: const Color(0xFF1E1E1E),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Close button at top right
+                Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    icon: const Icon(Icons.close, color: Colors.grey, size: 20),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ),
+                
+                // Crown icon
+                Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF2A2A2A),
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.amber, width: 2),
+                  ),
+                  child: const Icon(
+                    Icons.workspace_premium,
+                    color: Colors.amber,
+                    size: 40,
+                  ),
+                ),
+                
+                const SizedBox(height: 16),
+                
+                // Title
+                const Text(
+                  'Premium Üye Ol',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                
+                const SizedBox(height: 8),
+                
+                // Price
+                const Text(
+                  '29.99 TL/Ay',
+                  style: TextStyle(
+                    color: Colors.amber,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                
+                const SizedBox(height: 16),
+                
+                // Features
+                _buildFeatureRow('Sınırsız film ve dizi keyfi'),
+                _buildFeatureRow('Reklamsız izleme deneyimi'),
+                _buildFeatureRow('Tüm cihazlarda sınırsız izleme'),
+                _buildFeatureRow('Yüksek çözünürlük (4K) desteği'),
+                
+                const SizedBox(height: 24),
+                
+                // Subscribe button
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      // Add subscription logic here
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFE21221),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                    ),
+                    child: const Text(
+                      'Hemen Üye Ol',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                
+                const SizedBox(height: 12),
+                
+                // Terms text
+                const Text(
+                  'Üyeliğiniz her ay otomatik olarak yenilenecektir. İstediğiniz zaman iptal edebilirsiniz.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+  
+  Widget _buildFeatureRow(String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        children: [
+          Container(
+            margin: const EdgeInsets.only(right: 8),
+            child: const Icon(
+              Icons.check_circle,
+              color: Colors.green,
+              size: 20,
+            ),
+          ),
+          Text(
+            text,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
   @override
   void initState() {
     super.initState();
@@ -26,144 +168,97 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return Scaffold(
       backgroundColor: Colors.black,
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.black,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white60,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            label: 'Anasayfa',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            label: 'Profil',
-          ),
-        ],
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pushReplacementNamed(context, '/explore');
-          }
-        },
-      ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Üst Başlık Alanı
+              // Top Bar
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Icon(Icons.arrow_back, color: Colors.white),
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[800],
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                  ),
                   const Text(
                     'Profil Detayı',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
+                  GestureDetector(
+                    onTap: _showLimitedOfferDialog,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.favorite, color: Colors.white, size: 14),
+                          SizedBox(width: 4),
+                          Text(
+                            'Sınırlı Teklif',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 32),
+              // Profile Info
+              Row(
+                children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 6,
-                    ),
+                    width: 80,
+                    height: 80,
                     decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(20),
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.grey[700]!, width: 2),
                     ),
-                    child: const Row(
-                      children: [
-                        Icon(Icons.local_offer, color: Colors.white, size: 16),
-                        SizedBox(width: 4),
-                        Text(
-                          'Sınırlı Teklif',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ],
+                    child: ClipOval(
+                      child: user?.photoUrl != null
+                          ? Image.network(
+                              user!.photoUrl!,
+                              fit: BoxFit.cover,
+                            )
+                          : Container(
+                              color: Colors.grey[800],
+                              child: const Icon(
+                                Icons.person,
+                                size: 40,
+                                color: Colors.white,
+                              ),
+                            ),
                     ),
                   ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              // Tema ve Dil Seçici
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Tema seçici
-                  Row(
-                    children: [
-                      const Icon(Icons.brightness_6, color: Colors.white),
-                      const SizedBox(width: 8),
-                      DropdownButton<ThemeMode>(
-                        value: context.watch<SettingsCubit>().state.themeMode,
-                        dropdownColor: Colors.black,
-                        style: const TextStyle(color: Colors.white),
-                        underline: Container(),
-                        items: const [
-                          DropdownMenuItem(
-                            value: ThemeMode.dark,
-                            child: Text('Koyu'),
-                          ),
-                          DropdownMenuItem(
-                            value: ThemeMode.light,
-                            child: Text('Açık'),
-                          ),
-                        ],
-                        onChanged: (mode) {
-                          if (mode != null) {
-                            context.read<SettingsCubit>().changeTheme(mode);
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                  // Dil seçici
-                  Row(
-                    children: [
-                      const Icon(Icons.language, color: Colors.white),
-                      const SizedBox(width: 8),
-                      DropdownButton<Locale>(
-                        value: context.watch<SettingsCubit>().state.locale,
-                        dropdownColor: Colors.black,
-                        style: const TextStyle(color: Colors.white),
-                        underline: Container(),
-                        items: const [
-                          DropdownMenuItem(
-                            value: Locale('tr'),
-                            child: Text('Türkçe'),
-                          ),
-                          DropdownMenuItem(
-                            value: Locale('en'),
-                            child: Text('English'),
-                          ),
-                        ],
-                        onChanged: (locale) {
-                          if (locale != null) {
-                            context.read<SettingsCubit>().changeLocale(locale);
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-
-              // Profil Bilgisi
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 32,
-                    backgroundImage:
-                        user?.photoUrl != null && user!.photoUrl!.isNotEmpty
-                            ? NetworkImage(user.photoUrl!)
-                            : const AssetImage('assets/images/profile.jpg')
-                                as ImageProvider,
-                  ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 16),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -172,84 +267,88 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           user?.name ?? '-',
                           style: const TextStyle(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 22,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          user != null ? 'ID: ${user.id}' : '',
-                          style: const TextStyle(color: Colors.white60),
+                          'ID: ${user?.id ?? '-'}',
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                            fontSize: 14,
+                          ),
                         ),
                       ],
                     ),
                   ),
                   ElevatedButton(
+                    onPressed: () {
+                      final authBloc = context.read<AuthBloc>();
+                      if (authBloc.state is AuthSuccess) {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          builder: (context) => UploadPhotoSheet(
+                            onPhotoUploaded: (photoUrl) {
+                              final currentUser = (authBloc.state as AuthSuccess).user;
+                              final updatedUser = currentUser.copyWith(photoUrl: photoUrl);
+                              authBloc.add(AuthUserUpdated(updatedUser));
+                            },
+                          ),
+                        );
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
-                        vertical: 10,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        vertical: 8,
                       ),
                     ),
-                    onPressed: () {
-                      // Profil fotoğrafı yükleme ekranına yönlendirme
-                      Navigator.pushNamed(context, '/upload_profile_photo');
-                    },
-                    child: const Text('Fotoğraf Ekle'),
+                    child: const Text(
+                      'Fotoğraf Ekle',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
-
-              // Beğendiğim Filmler
+              const SizedBox(height: 32),
+              // Liked Movies Section
               const Text(
                 'Beğendiğim Filmler',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               const SizedBox(height: 16),
-
-              // Film Grid
+              // Movies Grid
               Expanded(
                 child: BlocBuilder<FilmBloc, FilmState>(
                   builder: (context, state) {
                     if (state is FilmLoading) {
-                      return const Center(child: CircularProgressIndicator());
+                      return const Center(
+                        child: CircularProgressIndicator(color: Colors.red),
+                      );
                     } else if (state is FavoriteFilmsLoaded) {
                       if (state.films.isEmpty) {
-                        return const Center(
-                          child: Text(
-                            'Favori filminiz yok.',
-                            style: TextStyle(color: Colors.white70),
-                          ),
-                        );
+                        return _buildSampleMoviesGrid();
                       }
-                      return GridView.count(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 12,
-                        mainAxisSpacing: 12,
-                        childAspectRatio: 0.65,
-                        children:
-                            state.films
-                                .map((film) => _buildMovieCard(film))
-                                .toList(),
-                      );
+                      return _buildMoviesGrid(state.films);
                     } else if (state is FilmError) {
-                      return Center(
-                        child: Text(
-                          state.message,
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                      );
+                      return _buildSampleMoviesGrid();
                     }
-                    return const SizedBox();
+                    return _buildSampleMoviesGrid();
                   },
                 ),
               ),
@@ -257,6 +356,57 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
       ),
+      bottomNavigationBar: _buildBottomNavigationBar(),
+    );
+  }
+
+  Widget _buildMoviesGrid(List<FilmModel> films) {
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 16,
+        childAspectRatio: 0.75,
+      ),
+      itemCount: films.length,
+      itemBuilder: (context, index) {
+        final film = films[index];
+        return _buildMovieCard(film);
+      },
+    );
+  }
+
+  Widget _buildSampleMoviesGrid() {
+    // Sample movies to show when no favorites are available
+    final sampleMovies = [
+      {
+        'title': 'Aşk, Ekmek, Hayaller',
+        'subtitle': 'Adam Yapım',
+        'image': 'https://via.placeholder.com/200x300/333/fff?text=Film1',
+      },
+      {
+        'title': 'Gece Karanlık',
+        'subtitle': 'Fox Studios',
+        'image': 'https://via.placeholder.com/200x300/333/fff?text=Film2',
+      },
+    ];
+
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 16,
+        childAspectRatio: 0.75,
+      ),
+      itemCount: sampleMovies.length,
+      itemBuilder: (context, index) {
+        final movie = sampleMovies[index];
+        return _buildSampleMovieCard(
+          movie['title']!,
+          movie['subtitle']!,
+          movie['image']!,
+        );
+      },
     );
   }
 
@@ -264,13 +414,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Image.network(
-            film.posterUrl,
-            width: double.infinity,
-            height: 180,
-            fit: BoxFit.cover,
+        Expanded(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.network(
+              film.posterUrl,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  color: Colors.grey[800],
+                  child: const Icon(
+                    Icons.movie,
+                    color: Colors.white,
+                    size: 40,
+                  ),
+                );
+              },
+            ),
           ),
         ),
         const SizedBox(height: 8),
@@ -278,11 +439,156 @@ class _ProfileScreenState extends State<ProfileScreen> {
           film.title,
           style: const TextStyle(
             color: Colors.white,
+            fontSize: 14,
             fontWeight: FontWeight.w600,
           ),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
         ),
-        Text(film.description, style: const TextStyle(color: Colors.white60)),
+        if (film.description.isNotEmpty)
+          Text(
+            film.description,
+            style: TextStyle(
+              color: Colors.grey[400],
+              fontSize: 12,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
       ],
+    );
+  }
+
+  Widget _buildSampleMovieCard(String title, String subtitle, String imageUrl) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey[800],
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Image.network(
+                imageUrl,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    color: Colors.grey[800],
+                    child: const Icon(
+                      Icons.movie,
+                      color: Colors.white,
+                      size: 40,
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          title,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+        if (subtitle.isNotEmpty)
+          Text(
+            subtitle,
+            style: TextStyle(
+              color: Colors.grey[400],
+              fontSize: 12,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+      ],
+    );
+  }
+
+  Widget _buildBottomNavigationBar() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.black,
+        border: Border(
+          top: BorderSide(color: Colors.grey[800]!, width: 0.5),
+        ),
+      ),
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, '/explore');
+                },
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[800],
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.home,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      'Anasayfa',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Icon(
+                      Icons.person,
+                      color: Colors.black,
+                      size: 24,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  const Text(
+                    'Profil',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

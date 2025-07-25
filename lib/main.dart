@@ -22,10 +22,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final apiService = ApiService();
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => AuthBloc(ApiService())),
-        BlocProvider(create: (_) => FilmBloc(FilmService(ApiService()))),
+        BlocProvider(create: (_) => AuthBloc(apiService: apiService)),
+        BlocProvider(create: (_) => FilmBloc(FilmService(apiService))),
         BlocProvider(create: (_) => SettingsCubit()),
       ],
       child: BlocBuilder<SettingsCubit, SettingsState>(

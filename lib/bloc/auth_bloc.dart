@@ -28,6 +28,13 @@ class RegisterRequested extends AuthEvent {
   List<Object?> get props => [name, email, password];
 }
 
+class AuthUserUpdated extends AuthEvent {
+  final UserModel user;
+  AuthUserUpdated(this.user);
+  @override
+  List<Object?> get props => [user];
+}
+
 // Stateler
 abstract class AuthState extends Equatable {
   @override
@@ -55,9 +62,14 @@ class AuthFailure extends AuthState {
 // Bloc
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final ApiService apiService;
-  AuthBloc(this.apiService) : super(AuthInitial()) {
+  AuthBloc({required this.apiService}) : super(AuthInitial()) {
     on<LoginRequested>(_onLoginRequested);
     on<RegisterRequested>(_onRegisterRequested);
+    on<AuthUserUpdated>((event, emit) {
+      if (state is AuthSuccess) {
+        emit(AuthSuccess(event.user));
+      }
+    });
   }
 
   Future<void> _onLoginRequested(
