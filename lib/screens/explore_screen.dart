@@ -43,7 +43,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: Colors.black87,
       body: SafeArea(
         child: BlocBuilder<FilmBloc, FilmState>(
           builder: (context, state) {
