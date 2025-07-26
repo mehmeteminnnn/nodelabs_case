@@ -176,6 +176,12 @@ class _ExploreScreenState extends State<ExploreScreen> {
           width: 60,
           height: 90,
           fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => Container(
+            width: 60,
+            height: 90,
+            color: Colors.grey[800],
+            child: const Icon(Icons.movie, color: Colors.white54, size: 30),
+          ),
         ),
         title: Text(
           film.title,
@@ -191,9 +197,23 @@ class _ExploreScreenState extends State<ExploreScreen> {
           overflow: TextOverflow.ellipsis,
         ),
         trailing: IconButton(
-          icon: const Icon(Icons.favorite_border, color: Colors.white),
-          onPressed:
-              null, // Favori işlemi için API güncellemesi gerekirse burada yapılacak.
+          icon: Icon(
+            film.isFavorite ? Icons.favorite : Icons.favorite_border,
+            color: film.isFavorite ? Colors.red : Colors.white,
+            size: 28,
+          ),
+          onPressed: () {
+            // Toggle favorite status
+            setState(() {
+              film.isFavorite = !film.isFavorite;
+            });
+            
+            // Here you can add API call to update favorite status on the server
+            // For example:
+            // final authBloc = context.read<AuthBloc>();
+            // final token = authBloc.currentUser?.token ?? '';
+            // context.read<FilmBloc>().add(ToggleFavorite(film.id, token));
+          },
         ),
       ),
     );
