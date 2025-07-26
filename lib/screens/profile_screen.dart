@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nodelabs_case/screens/limited_offer_screen.dart';
 import '../bloc/film_bloc.dart';
 import '../bloc/auth_bloc.dart';
+import '../bloc/settings_cubit.dart';
 import '../models/film_model.dart';
 import 'upload_photo_sheet.dart';
 
@@ -14,6 +15,24 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  // Theme options
+  final List<Map<String, dynamic>> _themes = [
+    {
+      'mode': ThemeMode.system,
+      'name': 'Sistem Teması',
+      'icon': Icons.brightness_auto,
+    },
+    {
+      'mode': ThemeMode.light,
+      'name': 'Açık Tema',
+      'icon': Icons.brightness_high,
+    },
+    {
+      'mode': ThemeMode.dark,
+      'name': 'Koyu Tema',
+      'icon': Icons.brightness_2,
+    },
+  ];
   /*void _showLimitedOfferDialog() {
     showDialog(
       context: context,
@@ -318,6 +337,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
               const SizedBox(height: 32),
+              // Theme Selection
+              _buildThemeSelection(),
+              const SizedBox(height: 16),
+              
               // Liked Movies Section
               const Text(
                 'Beğendiğim Filmler',
@@ -370,6 +393,69 @@ class _ProfileScreenState extends State<ProfileScreen> {
         return _buildMovieCard(film);
       },
     );
+  }
+
+  Widget _buildThemeSelection() {
+    final currentTheme = context.read<SettingsCubit>().state.themeMode;
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(left: 4.0, bottom: 8.0),
+          child: Text(
+            'Tema',
+            style: TextStyle(
+              color: Colors.white70,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.grey[900],
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: _themes.map((theme) {
+              final isSelected = currentTheme == theme['mode'];
+              return GestureDetector(
+                onTap: () => context.read<SettingsCubit>().changeTheme(theme['mode']),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                  decoration: BoxDecoration(
+                    color: isSelected ? Colors.red.withOpacity(0.2) : Colors.transparent,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        theme['icon'],
+                        color: isSelected ? Colors.red : Colors.white70,
+                        size: 20,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        theme['name'],
+                        style: TextStyle(
+                          color: isSelected ? Colors.white : Colors.white70,
+                          fontSize: 12,
+                          fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+      ],
+    );
+  }
   }
 
   Widget _buildSampleMoviesGrid() {
@@ -511,4 +597,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   
-}
+
